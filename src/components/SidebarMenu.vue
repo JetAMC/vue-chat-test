@@ -38,18 +38,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, provide } from 'vue'
 import { Plus } from '@element-plus/icons-vue'
-import { useChatStore } from '@/stores/chat'
+import { useAddChat } from '@/composables/useAddChat'
 import ChatTabBar from './ChatTabBar.vue'
 import AllChatsList from './AllChatsList.vue'
 import FavoritesChatsList from './FavoritesChatsList.vue'
 
 type Tab = 'all' | 'favorites'
-
-const store = useChatStore()
-const router = useRouter()
 
 const activeTab = ref<Tab>('all')
 
@@ -58,42 +54,7 @@ provide('setActiveTab', (tab: Tab) => {
   activeTab.value = tab
 })
 
-const isAdding = ref(false)
-const newChatTitle = ref('')
-const inputRef = ref<InstanceType<typeof import('element-plus')['ElInput']> | null>(null)
-
-function navigate(id: string) {
-  router.push({ name: 'chat', params: { id } })
-}
-
-async function startAdding() {
-  isAdding.value = true
-  newChatTitle.value = ''
-
-  await nextTick()
-
-  inputRef.value?.focus()
-}
-
-function confirmAdd() {
-  const title = newChatTitle.value.trim()
-
-  if (!title) {
-    return
-  }
-
-  const id = store.addChat(title)
-
-  isAdding.value = false
-  newChatTitle.value = ''
-
-  navigate(id)
-}
-
-function cancelAdd() {
-  isAdding.value = false
-  newChatTitle.value = ''
-}
+const { isAdding, newChatTitle, inputRef, startAdding, confirmAdd, cancelAdd } = useAddChat()
 </script>
 
 <style scoped>
