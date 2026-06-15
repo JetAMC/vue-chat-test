@@ -10,4 +10,5 @@ export type Message = {
   chatId: string
   text: string
   timestamp: number
+  sender: 'user' | 'bot'
 } & InstanceId

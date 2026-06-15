@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { Chat, Message } from '@/types'
+import { getBotReply } from '@/utils/botReply'
 
 const SEED_CHATS: Chat[] = [
   { id: '1', title: 'General' },
@@ -16,48 +17,56 @@ const SEED_MESSAGES: Message[] = [
     chatId: '1',
     text: 'Hey, how is it going?',
     timestamp: Date.now() - 120000,
+    sender: 'user',
   },
   {
     id: crypto.randomUUID(),
     chatId: '1',
     text: 'All good here, just checking in.',
     timestamp: Date.now() - 60000,
+    sender: 'user',
   },
   {
     id: crypto.randomUUID(),
     chatId: '2',
     text: "Don't forget the standup at 10.",
     timestamp: Date.now() - 300000,
+    sender: 'user',
   },
   {
     id: crypto.randomUUID(),
     chatId: '2',
     text: 'On it, thanks for the reminder!',
     timestamp: Date.now() - 240000,
+    sender: 'user',
   },
   {
     id: crypto.randomUUID(),
     chatId: '3',
     text: 'Dinner this Sunday?',
     timestamp: Date.now() - 600000,
+    sender: 'user',
   },
   {
     id: crypto.randomUUID(),
     chatId: '3',
     text: "Sounds great, I'll be there!",
     timestamp: Date.now() - 540000,
+    sender: 'user',
   },
   {
     id: crypto.randomUUID(),
     chatId: '4',
     text: 'Are you coming to the party?',
     timestamp: Date.now() - 900000,
+    sender: 'user',
   },
   {
     id: crypto.randomUUID(),
     chatId: '4',
     text: "Wouldn't miss it!",
     timestamp: Date.now() - 840000,
+    sender: 'user',
   },
 ]
 
@@ -100,6 +109,7 @@ export const useChatStore = defineStore('chat', () => {
       chatId,
       text: text.trim(),
       timestamp: Date.now(),
+      sender: 'user',
     })
 
     sendingChatIds.value = new Set([...sendingChatIds.value, chatId])
@@ -109,6 +119,16 @@ export const useChatStore = defineStore('chat', () => {
     const next = new Set(sendingChatIds.value)
     next.delete(chatId)
     sendingChatIds.value = next
+
+    setTimeout(() => {
+      messages.value.push({
+        id: crypto.randomUUID(),
+        chatId,
+        text: getBotReply(),
+        timestamp: Date.now(),
+        sender: 'bot',
+      })
+    }, 1000)
   }
 
   return {
