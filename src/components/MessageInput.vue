@@ -8,7 +8,7 @@
       :disabled="isSending"
       placeholder="Type a message..."
       resize="none"
-      @keydown.enter.prevent="submit"
+      @keydown.enter.exact.prevent="submit"
     />
     <el-button type="primary" native-type="submit" :disabled="!canSubmit" :loading="isSending">
       <el-icon v-if="!isSending"><Promotion /></el-icon>
