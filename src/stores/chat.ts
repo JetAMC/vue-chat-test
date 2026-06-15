@@ -65,6 +65,7 @@ export const useChatStore = defineStore('chat', () => {
   const chats = ref<Chat[]>([...SEED_CHATS])
   const messages = ref<Message[]>([...SEED_MESSAGES])
   const sendingChatIds = ref<Set<string>>(new Set())
+  const favoriteIds = ref<Set<string>>(new Set())
 
   const getChatById = computed(() => (id: string) => chats.value.find((c) => c.id === id))
 
@@ -74,6 +75,18 @@ export const useChatStore = defineStore('chat', () => {
   )
 
   const isChatSending = computed(() => (id: string) => sendingChatIds.value.has(id))
+
+  const favoriteChats = computed(() => chats.value.filter((c) => favoriteIds.value.has(c.id)))
+
+  function toggleFavorite(id: string): void {
+    const next = new Set(favoriteIds.value)
+    if (next.has(id)) {
+      next.delete(id)
+    } else {
+      next.add(id)
+    }
+    favoriteIds.value = next
+  }
 
   function addChat(title: string): string {
     const id = crypto.randomUUID()
@@ -101,10 +114,13 @@ export const useChatStore = defineStore('chat', () => {
   return {
     chats,
     messages,
+    favoriteIds,
+    favoriteChats,
     getChatById,
     getMessagesByChatId,
     isChatSending,
     addChat,
     sendMessage,
+    toggleFavorite,
   }
 })

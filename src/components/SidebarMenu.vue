@@ -29,28 +29,34 @@
       </div>
     </div>
 
+    <ChatTabBar />
+
     <el-scrollbar>
-      <ChatListItem
-        v-for="chat in store.chats"
-        :key="chat.id"
-        :chat="chat"
-        :active="route.params.id === chat.id"
-        @click="navigate(chat.id)"
-      />
+      <component :is="activeTab === 'all' ? AllChatsList : FavoritesChatsList" />
     </el-scrollbar>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, provide, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
 import { Plus } from '@element-plus/icons-vue'
 import { useChatStore } from '@/stores/chat'
-import ChatListItem from './ChatListItem.vue'
+import ChatTabBar from './ChatTabBar.vue'
+import AllChatsList from './AllChatsList.vue'
+import FavoritesChatsList from './FavoritesChatsList.vue'
+
+type Tab = 'all' | 'favorites'
 
 const store = useChatStore()
-const route = useRoute()
 const router = useRouter()
+
+const activeTab = ref<Tab>('all')
+
+provide('activeTab', activeTab)
+provide('setActiveTab', (tab: Tab) => {
+  activeTab.value = tab
+})
 
 const isAdding = ref(false)
 const newChatTitle = ref('')
