@@ -24,11 +24,29 @@ import SidebarMenu from '@/components/SidebarMenu.vue'
   border-right: 1px solid #e4e7ed;
 }
 
-/* Override Element Plus el-main defaults */
 .app-main {
-  padding: 0 !important;
+  padding: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .app-aside {
+    width: 100%;
+    height: 220px;
+    border-right: none;
+    border-bottom: 1px solid #e4e7ed;
+    flex-shrink: 0;
+  }
+
+  .app-main {
+    flex: 1;
+    min-height: 0;
+  }
 }
 </style>
