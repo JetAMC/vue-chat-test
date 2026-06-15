@@ -75,6 +75,12 @@ export const useChatStore = defineStore('chat', () => {
 
   const isChatSending = computed(() => (id: string) => sendingChatIds.value.has(id))
 
+  function addChat(title: string): string {
+    const id = crypto.randomUUID()
+    chats.value.push({ id, title: title.trim() })
+    return id
+  }
+
   async function sendMessage(chatId: string, text: string): Promise<void> {
     messages.value.push({
       id: crypto.randomUUID(),
@@ -98,6 +104,7 @@ export const useChatStore = defineStore('chat', () => {
     getChatById,
     getMessagesByChatId,
     isChatSending,
+    addChat,
     sendMessage,
   }
 })
