@@ -44,8 +44,7 @@ import { useAddChat } from '@/composables/useAddChat'
 import ChatTabBar from './ChatTabBar.vue'
 import AllChatsList from './AllChatsList.vue'
 import FavoritesChatsList from './FavoritesChatsList.vue'
-
-type Tab = 'all' | 'favorites'
+import { Tab } from '@/types'
 
 const activeTab = ref<Tab>('all')
 

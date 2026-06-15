@@ -2,6 +2,8 @@ export type InstanceId = {
     id: string
 }
 
+export type Tab = 'all' | 'favorites'
+
 export type Chat = {
   title: string
 } & InstanceId

@@ -20,8 +20,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 import type { Ref } from 'vue'
-
-type Tab = 'all' | 'favorites'
+import { Tab } from '@/types'
 
 const activeTab = inject<Ref<Tab>>('activeTab')!
 const setActiveTab = inject<(tab: Tab) => void>('setActiveTab')!
